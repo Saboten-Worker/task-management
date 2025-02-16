@@ -1,11 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { PlusCircle } from "lucide-react"
 
 // This is a placeholder for task data. In a real application, this would come from a database or API.
 const tasks = [
@@ -34,6 +35,11 @@ export function TaskList() {
   const [filter, setFilter] = useState("all")
   const [sort, setSort] = useState("priority")
 
+  const handleAddTask = () => {
+    // This function would open a modal or navigate to a new task form
+    console.log("Add new task")
+  }
+
   return (
     <div>
       <div className="mb-4 flex justify-between items-center">
@@ -59,12 +65,36 @@ export function TaskList() {
           </SelectContent>
         </Select>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {tasks.map((task) => (
-          <Card key={task.id}>
-            <CardHeader>
-              <CardTitle>{task.name}</CardTitle>
-              <div className="flex space-x-2 mt-2">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Task</TableHead>
+            <TableHead>Priority</TableHead>
+            <TableHead>Category</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Total Time</TableHead>
+            <TableHead>Action</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {tasks.map((task) => (
+            <TableRow key={task.id}>
+              <TableCell>
+                <div>
+                  <div className="font-medium">{task.name}</div>
+                  <Collapsible>
+                    <CollapsibleTrigger asChild>
+                      <Button variant="link" size="sm" className="p-0">
+                        Show description
+                      </Button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-2">
+                      <p className="text-sm text-muted-foreground">{task.description}</p>
+                    </CollapsibleContent>
+                  </Collapsible>
+                </div>
+              </TableCell>
+              <TableCell>
                 <Badge
                   variant={
                     task.priority === "High" ? "destructive" : task.priority === "Medium" ? "default" : "secondary"
@@ -72,7 +102,11 @@ export function TaskList() {
                 >
                   {task.priority}
                 </Badge>
+              </TableCell>
+              <TableCell>
                 <Badge variant="outline">{task.category}</Badge>
+              </TableCell>
+              <TableCell>
                 <Badge
                   variant={
                     task.status === "Completed" ? "success" : task.status === "In Progress" ? "warning" : "default"
@@ -80,29 +114,21 @@ export function TaskList() {
                 >
                   {task.status}
                 </Badge>
-              </div>
-              <CardDescription>{task.description}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Collapsible>
-                <CollapsibleTrigger asChild>
-                  <Button variant="ghost" size="sm" className="p-0">
-                    Show description
-                  </Button>
-                </CollapsibleTrigger>
-                <CollapsibleContent className="mt-2">
-                  <p>{task.description}</p>
-                </CollapsibleContent>
-              </Collapsible>
-              <p className="mt-2">Total time: {task.totalTime}</p>
-            </CardContent>
-            <CardFooter>
-              <Button variant={task.status === "Not Started" ? "default" : "secondary"} className="w-full">
-                {task.status === "Not Started" ? "Start" : task.status === "In Progress" ? "Pause" : "Restart"}
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
+              </TableCell>
+              <TableCell>{task.totalTime}</TableCell>
+              <TableCell>
+                <Button variant={task.status === "Not Started" ? "default" : "secondary"}>
+                  {task.status === "Not Started" ? "Start" : task.status === "In Progress" ? "Pause" : "Restart"}
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <div className="mt-4 flex justify-center">
+        <Button onClick={handleAddTask} className="w-full sm:w-auto">
+          <PlusCircle className="mr-2 h-4 w-4" /> Add New Task
+        </Button>
       </div>
     </div>
   )
