@@ -6,14 +6,14 @@ import { TaskTable, type Task } from "./tasks/task-table"
 const filterTasks = (tasks: Task[], filter: string) => {
   if (filter === "all") return tasks
   const statusMap = {
-    "not-started": "未着手",
-    "in-progress": "進行中",
-    "completed": "完了",
-    "incomplete": "未完了"
-  }
+    "not-started": "not_started",
+    "in-progress": "in_progress",
+    "completed": "completed",
+    "incomplete": "incomplete"
+  } as const;
   
   if (filter === "incomplete") {
-    return tasks.filter(task => task.status !== statusMap["completed"])
+    return tasks.filter(task => task.status !== "completed")
   }
   
   return tasks.filter(task => task.status === statusMap[filter as keyof typeof statusMap])
@@ -23,11 +23,10 @@ const sortTasks = (tasks: Task[], sort: string) => {
   return [...tasks].sort((a, b) => {
     switch (sort) {
       case "priority":
-        const priorityMap = { "高": 3, "中": 2, "低": 1 }
-        return (priorityMap[b.priority as keyof typeof priorityMap] || 0) - 
-               (priorityMap[a.priority as keyof typeof priorityMap] || 0)
+        const priorityMap = { "high": 3, "medium": 2, "low": 1 }
+        return (priorityMap[b.priority] || 0) - (priorityMap[a.priority] || 0)
       case "name":
-        return a.name.localeCompare(b.name)
+        return a.title.localeCompare(b.title)
       case "category":
         return a.category.localeCompare(b.category)
       default:
