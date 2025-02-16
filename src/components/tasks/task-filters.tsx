@@ -18,6 +18,7 @@ export function TaskFilters({ filter, sort, onFilterChange, onSortChange }: Task
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">すべて</SelectItem>
+          <SelectItem value="incomplete">完了していないもの</SelectItem>
           <SelectItem value="not-started">未着手</SelectItem>
           <SelectItem value="in-progress">進行中</SelectItem>
           <SelectItem value="completed">完了</SelectItem>

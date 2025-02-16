@@ -11,29 +11,11 @@ export interface Task {
   totalTime: string
 }
 
-// This is a placeholder for task data. In a real application, this would come from a database or API.
-const tasks: Task[] = [
-  {
-    id: 1,
-    name: "プロジェクト提案書の作成",
-    description: "新規クライアント向けのプロジェクト提案書を作成し、レビューする。",
-    priority: "高",
-    category: "仕事",
-    status: "進行中",
-    totalTime: "02:30:00",
-  },
-  {
-    id: 2,
-    name: "食料品の買い出し",
-    description: "今週の食料品（果物、野菜、牛乳など）を購入する。",
-    priority: "中",
-    category: "個人",
-    status: "未着手",
-    totalTime: "00:00:00",
-  },
-]
+interface TaskTableProps {
+  tasks: Task[]
+}
 
-export function TaskTable() {
+export function TaskTable({ tasks }: TaskTableProps) {
   return (
     <Table>
       <TableHeader>
