@@ -12,20 +12,20 @@ import { PlusCircle } from "lucide-react"
 const tasks = [
   {
     id: 1,
-    name: "Complete project proposal",
-    description: "Write and review the project proposal for the new client.",
-    priority: "High",
-    category: "Work",
-    status: "In Progress",
+    name: "プロジェクト提案書の作成",
+    description: "新規クライアント向けのプロジェクト提案書を作成し、レビューする。",
+    priority: "高",
+    category: "仕事",
+    status: "進行中",
     totalTime: "02:30:00",
   },
   {
     id: 2,
-    name: "Go grocery shopping",
-    description: "Buy groceries for the week, including fruits, vegetables, and milk.",
-    priority: "Medium",
-    category: "Personal",
-    status: "Not Started",
+    name: "食料品の買い出し",
+    description: "今週の食料品（果物、野菜、牛乳など）を購入する。",
+    priority: "中",
+    category: "個人",
+    status: "未着手",
     totalTime: "00:00:00",
   },
   // Add more tasks as needed
@@ -45,35 +45,35 @@ export function TaskList() {
       <div className="mb-4 flex justify-between items-center">
         <Select value={filter} onValueChange={setFilter}>
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Filter by status" />
+            <SelectValue placeholder="ステータスで絞り込む" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All</SelectItem>
-            <SelectItem value="not-started">Not Started</SelectItem>
-            <SelectItem value="in-progress">In Progress</SelectItem>
-            <SelectItem value="completed">Completed</SelectItem>
+            <SelectItem value="all">すべて</SelectItem>
+            <SelectItem value="not-started">未着手</SelectItem>
+            <SelectItem value="in-progress">進行中</SelectItem>
+            <SelectItem value="completed">完了</SelectItem>
           </SelectContent>
         </Select>
         <Select value={sort} onValueChange={setSort}>
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Sort by" />
+            <SelectValue placeholder="並び替え" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="priority">Priority</SelectItem>
-            <SelectItem value="name">Name</SelectItem>
-            <SelectItem value="category">Category</SelectItem>
+            <SelectItem value="priority">優先度</SelectItem>
+            <SelectItem value="name">タスク名</SelectItem>
+            <SelectItem value="category">カテゴリー</SelectItem>
           </SelectContent>
         </Select>
       </div>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Task</TableHead>
-            <TableHead>Priority</TableHead>
-            <TableHead>Category</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Total Time</TableHead>
-            <TableHead>Action</TableHead>
+            <TableHead>タスク</TableHead>
+            <TableHead>優先度</TableHead>
+            <TableHead>カテゴリー</TableHead>
+            <TableHead>ステータス</TableHead>
+            <TableHead>合計時間</TableHead>
+            <TableHead>アクション</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -85,7 +85,7 @@ export function TaskList() {
                   <Collapsible>
                     <CollapsibleTrigger asChild>
                       <Button variant="link" size="sm" className="p-0">
-                        Show description
+                        説明を表示
                       </Button>
                     </CollapsibleTrigger>
                     <CollapsibleContent className="mt-2">
@@ -97,7 +97,7 @@ export function TaskList() {
               <TableCell>
                 <Badge
                   variant={
-                    task.priority === "High" ? "destructive" : task.priority === "Medium" ? "default" : "secondary"
+                    task.priority === "高" ? "destructive" : task.priority === "中" ? "default" : "secondary"
                   }
                 >
                   {task.priority}
@@ -109,7 +109,7 @@ export function TaskList() {
               <TableCell>
                 <Badge
                   variant={
-                    task.status === "Completed" ? "success" : task.status === "In Progress" ? "warning" : "default"
+                    task.status === "完了" ? "success" : task.status === "進行中" ? "warning" : "default"
                   }
                 >
                   {task.status}
@@ -117,8 +117,8 @@ export function TaskList() {
               </TableCell>
               <TableCell>{task.totalTime}</TableCell>
               <TableCell>
-                <Button variant={task.status === "Not Started" ? "default" : "secondary"}>
-                  {task.status === "Not Started" ? "Start" : task.status === "In Progress" ? "Pause" : "Restart"}
+                <Button variant={task.status === "未着手" ? "default" : "secondary"}>
+                  {task.status === "未着手" ? "開始" : task.status === "進行中" ? "一時停止" : "再開"}
                 </Button>
               </TableCell>
             </TableRow>
@@ -127,10 +127,9 @@ export function TaskList() {
       </Table>
       <div className="mt-4 flex justify-center">
         <Button onClick={handleAddTask} className="w-full sm:w-auto">
-          <PlusCircle className="mr-2 h-4 w-4" /> Add New Task
+          <PlusCircle className="mr-2 h-4 w-4" /> 新規タスクを追加
         </Button>
       </div>
     </div>
   )
 }
-

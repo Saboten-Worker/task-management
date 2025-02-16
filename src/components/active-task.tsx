@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button"
 export function ActiveTask() {
   // This is a placeholder for the active task. In a real application, this would be dynamically rendered based on the current active task.
   const activeTask = {
-    name: "Complete project proposal",
-    priority: "High",
-    category: "Work",
+    name: "プロジェクト提案書の作成",
+    priority: "高",
+    category: "仕事",
     elapsedTime: "00:45:30",
   }
 
@@ -26,8 +26,8 @@ export function ActiveTask() {
           <div className="text-center">
             <div className="text-3xl font-mono mb-2">{activeTask.elapsedTime}</div>
             <div className="space-x-2">
-              <Button variant="warning">Pause</Button>
-              <Button variant="success">Complete</Button>
+              <Button variant="warning">一時停止</Button>
+              <Button variant="success">完了</Button>
             </div>
           </div>
         </div>
@@ -35,4 +35,3 @@ export function ActiveTask() {
     </div>
   )
 }
-

@@ -12,7 +12,7 @@ export function Header() {
       <div className="container flex h-14 items-center">
         <div className="mr-4 hidden md:flex">
           <a className="mr-6 flex items-center space-x-2" href="/">
-            <span className="hidden font-bold sm:inline-block">Task Manager</span>
+            <span className="hidden font-bold sm:inline-block">タスク管理</span>
           </a>
         </div>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
@@ -20,13 +20,13 @@ export function Header() {
             <Button
               variant="ghost"
               size="icon"
-              aria-label="Toggle theme"
+              aria-label="テーマの切り替え"
               className="mr-6"
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             >
               <SunIcon className="h-6 w-6 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
               <MoonIcon className="absolute h-6 w-6 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              <span className="sr-only">Toggle theme</span>
+              <span className="sr-only">テーマの切り替え</span>
             </Button>
           </nav>
         </div>
