@@ -26,7 +26,7 @@ export function ActiveTask() {
           <div className="text-center">
             <div className="text-3xl font-mono mb-2">{activeTask.elapsedTime}</div>
             <div className="space-x-2">
-              <Button variant="warning">一時停止</Button>
+              <Button variant="warning">中断</Button>
               <Button variant="success">完了</Button>
             </div>
           </div>

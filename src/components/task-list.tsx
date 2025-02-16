@@ -118,7 +118,7 @@ export function TaskList() {
               <TableCell>{task.totalTime}</TableCell>
               <TableCell>
                 <Button variant={task.status === "未着手" ? "default" : "secondary"}>
-                  {task.status === "未着手" ? "開始" : task.status === "進行中" ? "一時停止" : "再開"}
+                  {task.status === "未着手" ? "開始" : task.status === "進行中" ? "中断" : "再開"}
                 </Button>
               </TableCell>
             </TableRow>
