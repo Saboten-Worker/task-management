@@ -34,6 +34,7 @@ const sortTasks = (tasks: Task[], sort: string) => {
     }
   })
 }
+
 import { TaskFilters } from "./tasks/task-filters"
 import { AddTaskButton } from "./tasks/add-task-button"
 

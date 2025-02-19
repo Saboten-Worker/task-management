@@ -1,11 +1,13 @@
 import { Header } from "@/components/header"
 import { ActiveTask } from "@/components/active-task"
 import { TaskList } from "@/components/task-list"
+import { AddTaskForm } from "@/components/tasks/add-task-form"
 import { Task } from "@/components/tasks/task-table"
 
 async function fetchTasks(): Promise<Task[]> {
   const response = await fetch('http://localhost:3001/api/v1/tasks', {
-    cache: 'no-store' // 常に最新のデータを取得
+    cache: 'no-store', // 常に最新のデータを取得
+    next: { tags: ['tasks'] }
   });
   
   if (!response.ok) {
@@ -25,6 +27,7 @@ export default async function TaskManager() {
       <Header />
       <ActiveTask />
       <main className="flex-1 container mx-auto px-4 py-8">
+        <AddTaskForm />
         <TaskList tasks={tasks} />
       </main>
     </div>
