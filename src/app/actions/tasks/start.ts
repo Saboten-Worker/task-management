@@ -4,7 +4,7 @@ interface StartTaskParams {
   taskId: number;
   lastStartedAt: string;
 }
-ß
+
 export async function startTask({ taskId, lastStartedAt }: StartTaskParams) {
   try {
     const response = await fetch(`${process.env.RAILS_API_URL}/api/v1/tasks/${taskId}/start`, {
