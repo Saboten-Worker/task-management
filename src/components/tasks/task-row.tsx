@@ -6,46 +6,38 @@ import { TableCell, TableRow } from "@/components/ui/table"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { useActiveTask } from "@/contexts/active-task-context"
 import { startTask } from "@/app/actions/tasks/start"
-import { suspendTask } from "@/app/actions/tasks/suspend"
-import { completeTask } from "@/app/actions/tasks/complete"
-
 import { Task, priorityToJa, categoryToJa, statusToJa, formatSeconds } from "./task-table"
 
+/**
+ * タスク行のプロパティ
+ * @interface TaskRowProps
+ * @property {Task} task - 表示するタスク
+ */
 interface TaskRowProps {
   task: Task
 }
 
+/**
+ * タスク行コンポーネント
+ * タスクの詳細情報を表示し、タスクの開始・停止などのアクションを提供する
+ * @param {TaskRowProps} props - タスク行のプロパティ
+ * @returns {JSX.Element} タスク行の要素
+ */
 export function TaskRow({ task }: TaskRowProps) {
-  const { setActiveTask, startTimer, stopTimer } = useActiveTask()
+  const { setActiveTask, startTimer } = useActiveTask()
 
+  /**
+   * タスクを開始する
+   * APIを呼び出してタスクを開始し、アクティブタスクとして設定する
+   */
   const handleStartTask = async () => {
     try {
       const lastStartedAt = new Date().toISOString()
       const updatedTask = await startTask({ taskId: task.id, lastStartedAt })
-      setActiveTask({ ...task, status: "in_progress" })
+      setActiveTask({ ...task, status: "in_progress" as const })
       startTimer()
     } catch (error) {
       console.error("Failed to start task:", error)
-    }
-  }
-
-  const handleSuspendTask = async () => {
-    try {
-      const updatedTask = await suspendTask({ taskId: task.id })
-      setActiveTask(null)
-      stopTimer()
-    } catch (error) {
-      console.error("Failed to suspend task:", error)
-    }
-  }
-
-  const handleCompleteTask = async () => {
-    try {
-      const updatedTask = await completeTask({ taskId: task.id })
-      setActiveTask(null)
-      stopTimer()
-    } catch (error) {
-      console.error("Failed to complete task:", error)
     }
   }
 
@@ -69,9 +61,7 @@ export function TaskRow({ task }: TaskRowProps) {
       <TableCell>
         <Badge
           variant={
-            task.priority === "high" ? "destructive" :
-            task.priority === "medium" ? "default" :
-            "secondary"
+            task.priority === "high" ? "destructive" : task.priority === "medium" ? "default" : "secondary"
           }
         >
           {priorityToJa[task.priority]}
@@ -83,11 +73,7 @@ export function TaskRow({ task }: TaskRowProps) {
       <TableCell>
         <Badge
           variant={
-            task.status === "not_started" ? "secondary" :
-            task.status === "suspended" ? "secondary" :
-            task.status === "in_progress" ? "warning" :
-            task.status === "completed" ? "success" :
-            "default"
+            task.status === "completed" ? "success" : task.status === "in_progress" ? "warning" : "default"
           }
         >
           {statusToJa[task.status]}
@@ -95,34 +81,13 @@ export function TaskRow({ task }: TaskRowProps) {
       </TableCell>
       <TableCell>{formatSeconds(task.total_time)}</TableCell>
       <TableCell>
-        {task.status === "completed" ? "" : task.status === "in_progress" ? (
-          <div className="flex gap-2">
-            <Button 
-              variant="warning"
-              onClick={handleSuspendTask}
-            >
-              中断
-            </Button>
-            <Button 
-              variant="success"
-              onClick={handleCompleteTask}
-            >
-              完了
-            </Button>
-          </div>
-        ) : (
-          <Button 
-            variant={
-              task.status === "not_started" ? "secondary" :
-              task.status === "suspended" ? "secondary" : 
-              task.status === "completed" ? "success" :
-              "default"
-            }
-            onClick={handleStartTask}
-          >
-            {task.status === "not_started" ? "開始" : "再開"}
-          </Button>
-        )}
+        <Button 
+          variant={task.status === "not_started" ? "default" : "secondary"}
+          onClick={handleStartTask}
+          disabled={task.status === "in_progress"}
+        >
+          {task.status === "not_started" ? "開始" : "再開"}
+        </Button>
       </TableCell>
     </TableRow>
   )

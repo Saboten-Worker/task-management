@@ -6,24 +6,39 @@ import { formatSeconds } from "./task-table"
 import { suspendTask } from "@/app/actions/tasks/suspend"
 import { completeTask } from "@/app/actions/tasks/complete"
 
+/**
+ * タスクタイマーコンポーネント
+ * アクティブなタスクの経過時間を表示し、タスクの中断や完了などのアクションを提供する。
+ * useActiveTaskフックを使用してタスクの状態を管理し、1秒ごとに更新される経過時間を表示する。
+ * 
+ * @returns {JSX.Element | null} タイマーコンポーネント。アクティブタスクが存在しない場合はnullを返す
+ */
 export function TaskTimer() {
   const { activeTask, elapsedTime, setActiveTask, stopTimer } = useActiveTask()
 
+  /**
+   * タスクを中断する処理
+   * タイマーを停止し、タスクのステータスを中断に更新する
+   */
   const handleSuspend = async () => {
     if (activeTask) {
-      await suspendTask({ taskId: activeTask.id })
+      suspendTask({ taskId: activeTask.id })
       stopTimer()
       const updatedTask = { ...activeTask, status: "not_started" as const }
-      setActiveTask(updatedTask)
+      setActiveTask(null)
     }
   }
 
-  const handleComplete = async () => {
+  /**
+   * タスクを完了する処理
+   * タイマーを停止し、タスクのステータスを完了に更新する
+   */
+  const handleComplete = () => {
     if (activeTask) {
-      await completeTask({ taskId: activeTask.id })
+      completeTask({ taskId: activeTask.id })
       stopTimer()
-      const updatedTask = { ...activeTask, status: "completed" as const }
-      setActiveTask(updatedTask)
+      const updatedTask = { ...activeTask, status: "not_started" as const }
+      setActiveTask(null)
     }
   }
 

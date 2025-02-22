@@ -2,6 +2,21 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components
 import { TaskRow } from "./task-row"
 import { Suspense } from "react"
 
+/**
+ * タスクの型定義
+ * @interface Task
+ * @property {number} id - タスクのID
+ * @property {string} title - タスクのタイトル
+ * @property {string} description - タスクの説明
+ * @property {'high' | 'medium' | 'low'} priority - 優先度
+ * @property {'work' | 'personal'} category - カテゴリー
+ * @property {'not_started' | 'in_progress' | 'suspended' | 'completed'} status - タスクの状態
+ * @property {number} total_time - 合計作業時間（秒）
+ * @property {string} last_started_at - 最後に開始した時刻
+ * @property {number} owner_user_id - タスクの所有者ID
+ * @property {string} created_at - 作成日時
+ * @property {string} updated_at - 更新日時
+ */
 export interface Task {
   id: number
   title: string
@@ -16,20 +31,26 @@ export interface Task {
   updated_at: string
 }
 
-// 優先度の日本語変換
+/**
+ * 優先度の日本語表記マッピング
+ */
 export const priorityToJa = {
   high: '高',
   medium: '中',
   low: '低',
 } as const;
 
-// カテゴリーの日本語変換
+/**
+ * カテゴリーの日本語表記マッピング
+ */
 export const categoryToJa = {
   work: '仕事',
   personal: '個人',
 } as const;
 
-// ステータスの日本語変換
+/**
+ * ステータスの日本語表記マッピング
+ */
 export const statusToJa = {
   not_started: '未着手',
   in_progress: '進行中',
@@ -37,7 +58,11 @@ export const statusToJa = {
   completed: '完了',
 } as const;
 
-// 秒を時間形式（HH:MM:SS）に変換する関数
+/**
+ * 秒を時間形式（HH:MM:SS）に変換する
+ * @param {number} seconds - 変換する秒数
+ * @returns {string} 時間形式の文字列（例："01:30:45"）
+ */
 export function formatSeconds(seconds: number): string {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
@@ -46,10 +71,18 @@ export function formatSeconds(seconds: number): string {
   return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
 }
 
+/**
+ * タスクテーブルのプロパティ
+ */
 interface TaskTableProps {
   tasks: Task[]
 }
 
+/**
+ * タスク一覧を表示するテーブルコンポーネント
+ * @param {TaskTableProps} props - テーブルのプロパティ
+ * @returns {JSX.Element} タスク一覧テーブル
+ */
 export function TaskTable({ tasks }: TaskTableProps) {
   return (
     <Table>

@@ -3,9 +3,17 @@
 import { useEffect, useState } from "react"
 import { useActiveTask } from "@/contexts/active-task-context"
 import { TaskTable, type Task } from "./tasks/task-table"
+import { TaskFilters } from "./tasks/task-filters"
 
+/**
+ * タスクをフィルタリングする
+ * @param {Task[]} tasks - フィルタリング対象のタスク配列
+ * @param {string} filter - フィルター条件 ("all" | "not-started" | "in-progress" | "completed" | "incomplete")
+ * @returns {Task[]} フィルタリングされたタスク配列
+ */
 const filterTasks = (tasks: Task[], filter: string) => {
   if (filter === "all") return tasks
+  
   const statusMap = {
     "not-started": "not_started",
     "in-progress": "in_progress",
@@ -20,6 +28,12 @@ const filterTasks = (tasks: Task[], filter: string) => {
   return tasks.filter(task => task.status === statusMap[filter as keyof typeof statusMap])
 }
 
+/**
+ * タスクをソートする
+ * @param {Task[]} tasks - ソート対象のタスク配列
+ * @param {string} sort - ソート条件 ("priority" | "name" | "category")
+ * @returns {Task[]} ソートされたタスク配列
+ */
 const sortTasks = (tasks: Task[], sort: string) => {
   return [...tasks].sort((a, b) => {
     switch (sort) {
@@ -36,20 +50,34 @@ const sortTasks = (tasks: Task[], sort: string) => {
   })
 }
 
-import { TaskFilters } from "./tasks/task-filters"
+/**
+ * タスクリストのプロパティ
+ */
+interface TaskListProps {
+  tasks: Task[]
+}
 
-export function TaskList(props: { tasks: Task[] }) {
+/**
+ * タスクリストコンポーネント
+ * フィルタリング、ソート機能を備えたタスク一覧を表示する
+ * 進行中のタスクを自動的にアクティブタスクとして設定する
+ * @param {TaskListProps} props - タスクリストのプロパティ
+ * @returns {JSX.Element} タスクリストコンポーネント
+ */
+export function TaskList(props: TaskListProps) {
+  // デフォルトで未完了タスクを表示
   const [filter, setFilter] = useState("incomplete")
   const [sort, setSort] = useState("priority")
   const { setActiveTask, startTimer } = useActiveTask()
 
+  // 進行中のタスクを検出してアクティブタスクとして設定
   useEffect(() => {
     const inProgressTask = props.tasks.find(task => task.status === "in_progress")
     setActiveTask(inProgressTask || null)
     if (inProgressTask) {
       startTimer()
     }
-  }, [props.tasks, setActiveTask])
+  }, [props.tasks, setActiveTask, startTimer])
 
   return (
     <div>
