@@ -14,7 +14,7 @@ import { formatSeconds } from "./task-table"
  * @returns {JSX.Element | null} タイマーコンポーネント。アクティブタスクが存在しない場合はnullを返す
  */
 export function TaskTimer() {
-  const { activeTask, elapsedTime, setActiveTask, stopTimer } = useActiveTask()
+  const { activeTask, elapsedTime, setActiveTask } = useActiveTask()
 
   /**
    * タスクを中断する処理
@@ -23,8 +23,6 @@ export function TaskTimer() {
   const handleSuspend = async () => {
     if (activeTask) {
       suspendTask({ taskId: activeTask.id })
-      stopTimer()
-      const updatedTask = { ...activeTask, status: "not_started" as const }
       setActiveTask(null)
     }
   }
@@ -36,8 +34,6 @@ export function TaskTimer() {
   const handleComplete = () => {
     if (activeTask) {
       completeTask({ taskId: activeTask.id })
-      stopTimer()
-      const updatedTask = { ...activeTask, status: "not_started" as const }
       setActiveTask(null)
     }
   }

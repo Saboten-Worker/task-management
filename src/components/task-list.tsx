@@ -71,16 +71,13 @@ export function TaskList(props: TaskListProps) {
   // デフォルトで未完了タスクを表示
   const [filter, setFilter] = useState("incomplete")
   const [sort, setSort] = useState("priority")
-  const { setActiveTask, startTimer } = useActiveTask()
+  const { setActiveTask } = useActiveTask()
 
   // 進行中のタスクを検出してアクティブタスクとして設定
   useEffect(() => {
     const inProgressTask = props.tasks.find(task => task.status === "in_progress")
     setActiveTask(inProgressTask || null)
-    if (inProgressTask) {
-      startTimer()
-    }
-  }, [props.tasks, setActiveTask, startTimer])
+  }, [props.tasks])
 
   return (
     <div>

@@ -24,7 +24,7 @@ interface TaskRowProps {
  * @returns {JSX.Element} タスク行の要素
  */
 export function TaskRow({ task }: TaskRowProps) {
-  const { setActiveTask, startTimer } = useActiveTask()
+  const { setActiveTask } = useActiveTask()
 
   /**
    * タスクを開始する
@@ -35,7 +35,6 @@ export function TaskRow({ task }: TaskRowProps) {
       const lastStartedAt = new Date().toISOString()
       const updatedTask = await startTask({ taskId: task.id, lastStartedAt })
       setActiveTask({ ...updatedTask, status: "in_progress" as const })
-      startTimer()
     } catch (error) {
       console.error("Failed to start task:", error)
     }

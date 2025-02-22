@@ -1,5 +1,5 @@
-import { Header } from "@/components/header"
 import { ActiveTask } from "@/components/active-task"
+import { Header } from "@/components/header"
 import { TaskList } from "@/components/task-list"
 import { AddTaskForm } from "@/components/tasks/add-task-form"
 import { Task } from "@/components/tasks/task-table"
