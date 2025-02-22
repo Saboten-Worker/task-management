@@ -5,7 +5,7 @@ import { AddTaskForm } from "@/components/tasks/add-task-form"
 import { Task } from "@/components/tasks/task-table"
 
 async function fetchTasks(): Promise<Task[]> {
-  const response = await fetch('http://localhost:3001/api/v1/tasks', {
+  const response = await fetch(`${process.env.RAILS_API_URL}/api/v1/tasks`, {
     cache: 'no-store', // 常に最新のデータを取得
     next: { tags: ['tasks'] }
   });
@@ -21,7 +21,6 @@ async function fetchTasks(): Promise<Task[]> {
 
 export default async function TaskManager() {
   const tasks = await fetchTasks();
-  
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       <Header />

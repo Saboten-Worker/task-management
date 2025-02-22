@@ -1,5 +1,6 @@
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { TaskRow } from "./task-row"
+import { Suspense } from "react"
 
 export interface Task {
   id: number
@@ -7,7 +8,7 @@ export interface Task {
   description: string
   priority: 'high' | 'medium' | 'low'
   category: 'work' | 'personal'
-  status: 'not_started' | 'in_progress' | 'completed'
+  status: 'not_started' | 'in_progress' | 'suspended' | 'completed'
   total_time: number
   last_started_at: string
   owner_user_id: number
@@ -32,6 +33,7 @@ export const categoryToJa = {
 export const statusToJa = {
   not_started: '未着手',
   in_progress: '進行中',
+  suspended: '中断',
   completed: '完了',
 } as const;
 

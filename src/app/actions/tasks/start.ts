@@ -8,7 +8,7 @@ interface StartTaskParams {
 export async function startTask({ taskId, lastStartedAt }: StartTaskParams) {
   try {
     const response = await fetch(`${process.env.RAILS_API_URL}/api/v1/tasks/${taskId}/start`, {
-      method: "PATCH",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
@@ -16,6 +16,7 @@ export async function startTask({ taskId, lastStartedAt }: StartTaskParams) {
     });
 
     if (!response.ok) {
+      console.error(response);
       throw new Error("Failed to start task");
     }
 

@@ -1,12 +1,16 @@
+"use client"
+
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { useActiveTask } from "@/contexts/active-task-context"
-import { priorityToJa, categoryToJa, formatSeconds } from "./tasks/task-table"
+import { priorityToJa, categoryToJa } from "./tasks/task-table"
+import { TaskTimer } from "./tasks/task-timer"
 
 export function ActiveTask() {
-  const { activeTask, elapsedTime, stopTimer } = useActiveTask()
+  const { activeTask } = useActiveTask()
 
-  if (!activeTask) return null
+  if (!activeTask) {
+    return null
+  }
 
   return (
     <div className="bg-muted py-4 border-b">
@@ -25,13 +29,7 @@ export function ActiveTask() {
               <Badge variant="outline">{categoryToJa[activeTask.category]}</Badge>
             </div>
           </div>
-          <div className="text-center">
-            <div className="text-3xl font-mono mb-2">{formatSeconds(elapsedTime)}</div>
-            <div className="space-x-2">
-              <Button variant="warning" onClick={stopTimer}>中断</Button>
-              <Button variant="success">完了</Button>
-            </div>
-          </div>
+          <TaskTimer />
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useActiveTask } from "@/contexts/active-task-context"
 import { TaskTable, type Task } from "./tasks/task-table"
 
 const filterTasks = (tasks: Task[], filter: string) => {
@@ -36,16 +37,19 @@ const sortTasks = (tasks: Task[], sort: string) => {
 }
 
 import { TaskFilters } from "./tasks/task-filters"
-import { AddTaskButton } from "./tasks/add-task-button"
 
 export function TaskList(props: { tasks: Task[] }) {
-  const [filter, setFilter] = useState("all")
+  const [filter, setFilter] = useState("incomplete")
   const [sort, setSort] = useState("priority")
+  const { setActiveTask, startTimer } = useActiveTask()
 
-  const handleAddTask = () => {
-    // This function would open a modal or navigate to a new task form
-    console.log("Add new task")
-  }
+  useEffect(() => {
+    const inProgressTask = props.tasks.find(task => task.status === "in_progress")
+    setActiveTask(inProgressTask || null)
+    if (inProgressTask) {
+      startTimer()
+    }
+  }, [props.tasks, setActiveTask])
 
   return (
     <div>
@@ -56,7 +60,6 @@ export function TaskList(props: { tasks: Task[] }) {
         onSortChange={setSort}
       />
       <TaskTable tasks={sortTasks(filterTasks(props.tasks, filter), sort)} />
-      <AddTaskButton onClick={handleAddTask} />
     </div>
   )
 }
