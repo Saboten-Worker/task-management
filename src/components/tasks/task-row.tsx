@@ -1,12 +1,12 @@
 "use client"
 
+import { startTask } from "@/app/actions/tasks/start"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { TableCell, TableRow } from "@/components/ui/table"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { TableCell, TableRow } from "@/components/ui/table"
 import { useActiveTask } from "@/contexts/active-task-context"
-import { startTask } from "@/app/actions/tasks/start"
-import { Task, priorityToJa, categoryToJa, statusToJa, formatSeconds } from "./task-table"
+import { Task, categoryToJa, formatSeconds, priorityToJa, statusToJa } from "./task-table"
 
 /**
  * タスク行のプロパティ
@@ -34,7 +34,7 @@ export function TaskRow({ task }: TaskRowProps) {
     try {
       const lastStartedAt = new Date().toISOString()
       const updatedTask = await startTask({ taskId: task.id, lastStartedAt })
-      setActiveTask({ ...task, status: "in_progress" as const })
+      setActiveTask({ ...updatedTask, status: "in_progress" as const })
       startTimer()
     } catch (error) {
       console.error("Failed to start task:", error)

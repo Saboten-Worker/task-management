@@ -1,10 +1,10 @@
 "use client"
 
+import { completeTask } from "@/app/actions/tasks/complete"
+import { suspendTask } from "@/app/actions/tasks/suspend"
 import { Button } from "@/components/ui/button"
 import { useActiveTask } from "@/contexts/active-task-context"
 import { formatSeconds } from "./task-table"
-import { suspendTask } from "@/app/actions/tasks/suspend"
-import { completeTask } from "@/app/actions/tasks/complete"
 
 /**
  * タスクタイマーコンポーネント
@@ -46,8 +46,8 @@ export function TaskTimer() {
     <div className="text-center">
       <div className="text-3xl font-mono mb-2">{formatSeconds(elapsedTime)}</div>
       <div className="space-x-2">
-        <Button variant="warning" onClick={handleSuspend}>中断</Button>
-        <Button variant="success" onClick={handleComplete}>完了</Button>
+        <Button variant="warning" onClick={handleSuspend} disabled={activeTask == null}>中断</Button>
+        <Button variant="success" onClick={handleComplete} disabled={activeTask == null}>完了</Button>
       </div>
     </div>
   )

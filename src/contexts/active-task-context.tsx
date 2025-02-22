@@ -1,7 +1,7 @@
 "use client"
 
-import { createContext, useContext, useEffect, useState } from "react"
 import { Task } from "@/components/tasks/task-table"
+import { createContext, useContext, useEffect, useState } from "react"
 
 /**
  * アクティブタスクのコンテキストの型定義
@@ -42,16 +42,13 @@ export function ActiveTaskProvider({ children }: { children: React.ReactNode }) 
   useEffect(() => {
     let intervalId: NodeJS.Timeout
 
-    // タイマーが実行中かつタスクが存在し、タスクのステータスが進行中の場合のみタイマーを更新
-    if (isRunning && activeTask && activeTask.status === "in_progress") {
+    if (isRunning && activeTask?.status === "in_progress") {
       intervalId = setInterval(() => {
-        setElapsedTime((prev) => prev + 1)
+        console.log(elapsedTime)
+        setElapsedTime(prev => prev + 1)
       }, 1000)
-    }
 
-    // クリーンアップ関数：コンポーネントのアンマウント時やタイマー停止時にインターバルをクリア
-    return () => {
-      if (intervalId) {
+      return () => {
         clearInterval(intervalId)
       }
     }

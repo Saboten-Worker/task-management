@@ -1,9 +1,9 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import { useActiveTask } from "@/contexts/active-task-context"
-import { TaskTable, type Task } from "./tasks/task-table"
+import { useEffect, useState } from "react"
 import { TaskFilters } from "./tasks/task-filters"
+import { TaskTable, type Task } from "./tasks/task-table"
 
 /**
  * タスクをフィルタリングする
@@ -39,13 +39,16 @@ const sortTasks = (tasks: Task[], sort: string) => {
     switch (sort) {
       case "priority":
         const priorityMap = { "high": 3, "medium": 2, "low": 1 }
-        return (priorityMap[b.priority] || 0) - (priorityMap[a.priority] || 0)
+        const priorityDiff = (priorityMap[b.priority] || 0) - (priorityMap[a.priority] || 0)
+        return priorityDiff !== 0 ? priorityDiff : a.id - b.id
       case "name":
-        return a.title.localeCompare(b.title)
+        const titleDiff = a.title.localeCompare(b.title)
+        return titleDiff !== 0 ? titleDiff : a.id - b.id
       case "category":
-        return a.category.localeCompare(b.category)
+        const categoryDiff = a.category.localeCompare(b.category)
+        return categoryDiff !== 0 ? categoryDiff : a.id - b.id
       default:
-        return 0
+        return a.id - b.id
     }
   })
 }

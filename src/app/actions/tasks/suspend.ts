@@ -1,5 +1,7 @@
 "use server"
 
+import { revalidateTag } from "next/cache";
+
 interface SuspendTaskParams {
     taskId: number;
 }
@@ -19,6 +21,7 @@ export async function suspendTask({ taskId }: SuspendTaskParams) {
             throw new Error("Failed to suspend task");
         }
 
+        revalidateTag("tasks");
         return await response.json();
     } catch (error) {
         console.error("Error suspending task:", error);
