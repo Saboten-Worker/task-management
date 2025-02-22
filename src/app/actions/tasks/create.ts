@@ -23,7 +23,7 @@ export async function createTask(formData: FormData): Promise<{ error?: string }
   };
 
   try {
-    const response = await fetch("http://localhost:3001/api/v1/tasks", {
+    const response = await fetch(`${process.env.RAILS_API_URL}/api/v1/tasks`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { TableCell, TableRow } from "@/components/ui/table"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { useActiveTask } from "@/contexts/active-task-context"
+import { startTask } from "@/app/actions/tasks/start"
 
 import { Task, priorityToJa, categoryToJa, statusToJa, formatSeconds } from "./task-table"
 
@@ -12,6 +14,18 @@ interface TaskRowProps {
 }
 
 export function TaskRow({ task }: TaskRowProps) {
+  const { setActiveTask, startTimer } = useActiveTask()
+
+  const handleStartTask = async () => {
+    try {
+      const lastStartedAt = new Date().toISOString()
+      await startTask({ taskId: task.id, lastStartedAt })
+      setActiveTask(task)
+      startTimer()
+    } catch (error) {
+      console.error("Failed to start task:", error)
+    }
+  }
   return (
     <TableRow>
       <TableCell>
@@ -52,7 +66,10 @@ export function TaskRow({ task }: TaskRowProps) {
       </TableCell>
       <TableCell>{formatSeconds(task.total_time)}</TableCell>
       <TableCell>
-        <Button variant={task.status === "not_started" ? "default" : "secondary"}>
+        <Button
+          variant={task.status === "not_started" ? "default" : "secondary"}
+          onClick={handleStartTask}
+        >
           {task.status === "not_started" ? "開始" : task.status === "in_progress" ? "中断" : "再開"}
         </Button>
       </TableCell>
