@@ -1,25 +1,15 @@
 "use server"
 
+import { api } from "@/lib/api";
 import { revalidateTag } from "next/cache";
 
 export async function completeTask({ taskId }: { taskId: number }) {
     try {
-        const response = await fetch(`${process.env.RAILS_API_URL}/api/v1/tasks/${taskId}/complete`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-
-        if (!response.ok) {
-            console.error(response);
-            throw new Error("Failed to suspend task");
-        }
-
+        const response = await api.post(`/api/v1/tasks/${taskId}/complete`, {});
         revalidateTag("tasks");
-        return await response.json();
+        return response;
     } catch (error) {
-        console.error("Error suspending task:", error);
-        throw error;
+        console.error("Error completing task:", error);
+        throw new Error("タスクの完了処理に失敗しました");
     }
 }

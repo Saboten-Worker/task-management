@@ -1,6 +1,7 @@
 "use server"
 
-import { revalidateTag } from "next/cache"
+import { api } from "@/lib/api";
+import { revalidateTag } from "next/cache";
 
 interface CreateTaskData {
   title: string;
@@ -23,19 +24,8 @@ export async function createTask(formData: FormData): Promise<{ error?: string }
   };
 
   try {
-    const response = await fetch(`${process.env.RAILS_API_URL}/api/v1/tasks`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      throw new Error("タスクの作成に失敗しました");
-    }
-
-    revalidateTag("tasks")
+    await api.post('/api/v1/tasks', data);
+    revalidateTag("tasks");
     return {};
   } catch (error) {
     console.error("Error creating task:", error);
