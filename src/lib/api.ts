@@ -1,5 +1,5 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+const API_BASE_URL = process.env.RAILS_API_URL || 'http://localhost:3001';
+const API_KEY = process.env.RAILS_API_KEY;
 
 interface RequestOptions extends RequestInit {
   data?: any;
@@ -9,7 +9,7 @@ export async function fetchApi(
   endpoint: string,
   options: RequestOptions = {}
 ) {
-  console.log(`=============fetchApi: ${endpoint} reuquest-url: ${API_BASE_URL}${endpoint}`, options)
+  console.log(`reuquest-url: ${API_BASE_URL}${endpoint}`, options)
   const { data, headers = {}, ...restOptions } = options;
 
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
