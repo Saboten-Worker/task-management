@@ -71,13 +71,21 @@ export function TaskList(props: TaskListProps) {
   // デフォルトで未完了タスクを表示
   const [filter, setFilter] = useState("incomplete")
   const [sort, setSort] = useState("priority")
-  const { setActiveTask } = useActiveTask()
+  const { activeTask, setActiveTask } = useActiveTask()
 
-  // 進行中のタスクを検出してアクティブタスクとして設定
+  // 初回レンダリング時と、タスクのステータスが変更されたときのみアクティブタスクを設定
   useEffect(() => {
     const inProgressTask = props.tasks.find(task => task.status === "in_progress")
-    setActiveTask(inProgressTask || null)
-  }, [props.tasks])
+    // アクティブタスクがない状態で進行中タスクが見つかった場合、
+    // またはアクティブタスクのステータスが変更された場合のみ更新
+    const shouldUpdateActiveTask = 
+      (!activeTask && inProgressTask) || 
+      (activeTask && props.tasks.find(task => task.id === activeTask.id)?.status !== activeTask.status);
+
+    if (shouldUpdateActiveTask) {
+      setActiveTask(inProgressTask || null);
+    }
+  }, [props.tasks, activeTask])
 
   return (
     <div>

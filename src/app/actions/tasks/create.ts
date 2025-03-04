@@ -24,7 +24,7 @@ export async function createTask(formData: FormData): Promise<{ error?: string }
   };
 
   try {
-    await api.post('/api/v1/tasks', data);
+    await api.post('/api/v1/tasks', data as unknown as Record<string, unknown>);
     revalidateTag("tasks");
     return {};
   } catch (error) {

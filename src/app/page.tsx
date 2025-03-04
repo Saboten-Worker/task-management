@@ -8,8 +8,10 @@ import { api } from "@/lib/api";
 async function fetchTasks(): Promise<Task[]> {
   try {
     return await api.get("/api/v1/tasks", {
-      cache: 'no-store', // 常に最新のデータを取得
-      next: { tags: ['tasks'] }
+      next: { 
+        tags: ['tasks'],
+        revalidate: 60 // 60秒ごとに再検証
+      }
     });
   } catch (error) {
     console.error('Error fetching tasks:', error);

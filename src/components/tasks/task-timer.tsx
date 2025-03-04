@@ -22,8 +22,8 @@ export function TaskTimer() {
    */
   const handleSuspend = async () => {
     if (activeTask) {
-      suspendTask({ taskId: activeTask.id })
       setActiveTask(null)
+      await suspendTask({ taskId: activeTask.id })
     }
   }
 
@@ -31,10 +31,10 @@ export function TaskTimer() {
    * タスクを完了する処理
    * タイマーを停止し、タスクのステータスを完了に更新する
    */
-  const handleComplete = () => {
+  const handleComplete = async () => {
     if (activeTask) {
-      completeTask({ taskId: activeTask.id })
       setActiveTask(null)
+      await completeTask({ taskId: activeTask.id })
     }
   }
 

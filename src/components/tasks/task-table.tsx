@@ -1,6 +1,5 @@
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { TaskRow } from "./task-row"
-import { Suspense } from "react"
 
 /**
  * タスクの型定義

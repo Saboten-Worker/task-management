@@ -2,7 +2,7 @@ const API_BASE_URL = process.env.RAILS_API_URL || 'http://localhost:3001';
 const API_KEY = process.env.RAILS_API_KEY;
 
 interface RequestOptions extends RequestInit {
-  data?: any;
+  data?: Record<string, unknown>;
 }
 
 export async function fetchApi(
@@ -33,10 +33,10 @@ export const api = {
   get: (endpoint: string, options?: RequestOptions) => 
     fetchApi(endpoint, { ...options, method: 'GET' }),
   
-  post: (endpoint: string, data: any, options?: RequestOptions) =>
+  post: (endpoint: string, data: Record<string, unknown>, options?: RequestOptions) =>
     fetchApi(endpoint, { ...options, method: 'POST', data }),
   
-  put: (endpoint: string, data: any, options?: RequestOptions) =>
+  put: (endpoint: string, data: Record<string, unknown>, options?: RequestOptions) =>
     fetchApi(endpoint, { ...options, method: 'PUT', data }),
   
   delete: (endpoint: string, options?: RequestOptions) =>
